@@ -40,10 +40,10 @@ Controls who is the first player. Can be one of:
 
 Controls the number mapping of the board. Can be one of:
 
-- `reverse` (_default_)  
+- `numpad` (_default_)  
   Number 1 in the bottom left, going left-to-right, bottom-to-top.  
   This mode is very useful if using a number pad to play.
-- `normal`  
+- `natural`  
   Number 1 in the top left, going left-to-right, top-to-bottom.
 
 #### `guide-visibility`

@@ -13,14 +13,14 @@ const argv = Object.fromEntries(
 );
 
 const firstPlayer = argv.firstPlayer || 'cpu';
-if (!['player', 'cpu'].includes(firstPlayer)) {
-  console.log(`Invalid value for 'first-player': ${firstPlayer}. Must be one of: player, cpu`);
+if (!['cpu', 'player'].includes(firstPlayer)) {
+  console.log(`Invalid value for 'first-player': ${firstPlayer}. Must be one of: cpu, player`);
   process.exit(1);
 }
 
-const numberMode = argv.numberMode || 'reverse';
-if (!['normal', 'reverse'].includes(numberMode)) {
-  console.log(`Invalid value for 'number-mode': ${numberMode}. Must be one of: normal, reverse`);
+const numberMode = argv.numberMode || 'numpad';
+if (!['numpad', 'natural'].includes(numberMode)) {
+  console.log(`Invalid value for 'number-mode': ${numberMode}. Must be one of: numpad, natural`);
   process.exit(1);
 }
 
@@ -200,7 +200,7 @@ const loop = async () => {
   drawBoard();
 
   if (hasError) {
-    console.log(`Submit this to the developer: ${board.join('')}#${+firstPlayer == 'cpu'}_${+numberMode == 'reverse'}\n`);
+    console.log(`Submit this to the developer: ${board.join('')}#${+firstPlayer == 'cpu'}_${+numberMode == 'numpad'}\n`);
     process.exit(1);
   }
 
@@ -237,7 +237,7 @@ const header = () => {
 };
 
 const mapIndex = (value) => {
-  if (numberMode == 'normal') return value;
+  if (numberMode == 'natural') return value;
   if ([1, 2, 3].includes(value)) return value + 6;
   if ([7, 8, 9].includes(value)) return value - 6;
   return value;
