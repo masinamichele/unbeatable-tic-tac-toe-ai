@@ -4,15 +4,29 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const firstPlayer = process.argv[2] || 'player';
+const argv = Object.fromEntries(
+  process.argv
+    .slice(2)
+    .map((pair) => pair.split('='))
+    .filter((pair) => pair.length == 2)
+    .map(([key, value]) => [key.slice(2).replace(/-(\w)/g, (_, $1) => $1.toUpperCase()), value])
+);
+
+const firstPlayer = argv.firstPlayer || 'cpu';
 if (!['player', 'cpu'].includes(firstPlayer)) {
-  console.log(`Invalid argument at position 1: ${firstPlayer}. Must be one of: player, cpu`);
+  console.log(`Invalid value for 'first-player': ${firstPlayer}. Must be one of: player, cpu`);
   process.exit(1);
 }
 
-const numberMode = process.argv[3] || 'normal';
+const numberMode = argv.numberMode || 'reverse';
 if (!['normal', 'reverse'].includes(numberMode)) {
-  console.log(`Invalid argument at position 2: ${numberMode}. Must be one of: normal, reverse`);
+  console.log(`Invalid value for 'number-mode': ${numberMode}. Must be one of: normal, reverse`);
+  process.exit(1);
+}
+
+const guideVisibility = argv.guideVisibility || 'visible';
+if (!['visible', 'hidden'].includes(guideVisibility)) {
+  console.log(`Invalid value for 'guide-visibility': ${guideVisibility}. Must be one of: visible, hidden`);
   process.exit(1);
 }
 
@@ -223,7 +237,7 @@ const header = () => {
 };
 
 const mapIndex = (value) => {
-  if (!numberMode == 'reverse') return value;
+  if (numberMode == 'normal') return value;
   if ([1, 2, 3].includes(value)) return value + 6;
   if ([7, 8, 9].includes(value)) return value - 6;
   return value;
@@ -232,7 +246,7 @@ const mapIndex = (value) => {
 const drawBoard = () => {
   const c = (i) => {
     const char = charset[board[i]];
-    return `\x1b[${color[char]}m${char || mapIndex(i + 1)}\x1b[0m`;
+    return `\x1b[${color[char]}m${char || (guideVisibility == 'visible' ? mapIndex(i + 1) : ' ')}\x1b[0m`;
   };
   console.log(` ${c(0)} │ ${c(1)} │ ${c(2)}`);
   console.log('───┼───┼───');

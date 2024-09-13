@@ -18,29 +18,47 @@ Do you really want to take on the challenge? Can you stop the next generation of
 3. Run the following command:
 
 ```shell
-$ node index.js <first_player> <number_mode>
+$ node index.js
+    --first-player=player|cpu
+    --number-mode=normal|reverse
+    --guide-visibility=visible|hidden
 ```
 
-Both arguments are not required.
+Every arguments is optional, but if you use them **be sure to use an equal sign `=` to separate keys and values.**
 
-### `first_player`
+### Example
+
+```shell
+$ node index.js --guide-visibility=hidden
+```
+
+### Parameter `first-player`
 
 Controls who is the first player. Can be one of:
 
-- `player` (_default_)  
-  The player goes first.
-- `cpu`  
+- `cpu` (_default_)  
   The AI goes first.
+- `player`  
+  The player goes first.
 
-### `number_mode`
+### Parameter `number-mode`
 
 Controls the number mapping of the board. Can be one of:
 
-- `normal` (_default_)  
-  Number 1 in the top left, going left-to-right, top-to-bottom.
-- `reverse`  
+- `reverse` (_default_)  
   Number 1 in the bottom left, going left-to-right, bottom-to-top.  
   This mode is very useful if using a number pad to play.
+- `normal`  
+  Number 1 in the top left, going left-to-right, top-to-bottom.
+
+### Parameter `guide-visibility`
+
+Controls the visibility of the number guides. Can be one of:
+
+- `visible` (_default_)  
+  Number guides are visible.
+- `hidden`  
+  Number guides are hidden.
 
 ## Serious description
 
