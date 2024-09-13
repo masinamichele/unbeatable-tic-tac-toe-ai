@@ -15,14 +15,9 @@ Do you really want to take on the challenge? Can you stop the next generation of
 
 1. Clone this repository
 2. `cd` into the project folder
-3. Run the following command:
+3. Run `node index.js`
 
-```shell
-$ node index.js
-    --first-player=player|cpu
-    --number-mode=normal|reverse
-    --guide-visibility=visible|hidden
-```
+### Arguments
 
 Every arguments is optional, but if you use them **be sure to use an equal sign `=` to separate keys and values.**
 
@@ -32,7 +27,7 @@ Every arguments is optional, but if you use them **be sure to use an equal sign 
 $ node index.js --guide-visibility=hidden
 ```
 
-### Parameter `first-player`
+#### `first-player`
 
 Controls who is the first player. Can be one of:
 
@@ -41,7 +36,7 @@ Controls who is the first player. Can be one of:
 - `player`  
   The player goes first.
 
-### Parameter `number-mode`
+#### `number-mode`
 
 Controls the number mapping of the board. Can be one of:
 
@@ -51,7 +46,7 @@ Controls the number mapping of the board. Can be one of:
 - `normal`  
   Number 1 in the top left, going left-to-right, top-to-bottom.
 
-### Parameter `guide-visibility`
+#### `guide-visibility`
 
 Controls the visibility of the number guides. Can be one of:
 
@@ -62,7 +57,7 @@ Controls the visibility of the number guides. Can be one of:
 
 ## Serious description
 
-Tic-Tac-Toes is a pretty simple game. There is no actual AI involved, as every possible state can be easily handled.
+Tic-Tac-Toe is a pretty simple game. There is no actual AI involved, as every possible state can be easily handled.
 
 The "AI" uses a single method to compute the next best move based on the current board state, following a [very simple algorithm](#implementation-details). This algorithm does not use the typical minimax strategies, and instead relies on pattern matching (or something close, as the real deal is not available in JavaScript) to produce a better board every time.
 
@@ -78,7 +73,7 @@ The algorithm follows these simple rules for each CPU turn:
 - Otherwise, if there is any pair of player's symbols that can turn into a three-of-a-kind in the next move, block it
 - Otherwise, if no corner is used, pick any one
 - Otherwise, if there is a corner already picked by the CPU and the opposite is open, pick it
-- Otherwise, if there a corner already picked by the player and the opposite is open, pick it
+- Otherwise, if there is a corner already picked by the player and the opposite is open, pick it
 - Otherwise, if there is a corner already picked by the CPU and one adjacent is open, pick it
 - Otherwise, if there are any spots left, the board will inevitably lead to a draw, so pick any spot
 
