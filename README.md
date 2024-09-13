@@ -1,5 +1,7 @@
 # Unbeatable Tic-Tac-Toe AI
 
+![](screenshot.png)
+
 There is no way you can beat this no-dependencies terminal-based Tic-Tac-Toe AI. You should not try as you are not good enough.
 
 Do you really want to take on the challenge? Can you stop the next generation of artificial intelligence from taking over the world?
@@ -44,11 +46,23 @@ Controls the number mapping of the board. Can be one of:
 
 Tic-Tac-Toes is a pretty simple game. There is no actual AI involved, as every possible state can be easily handled.
 
-The "AI" uses a single method to compute the next best move based on the current board state, following a very simple algorithm. This algorithm does not use the typical minimax strategies, and instead relies on pattern matching (or something close, as the real deal is not available in JavaScript) to produce a better board every time.
+The "AI" uses a single method to compute the next best move based on the current board state, following a [very simple algorithm](#implementation-details). This algorithm does not use the typical minimax strategies, and instead relies on pattern matching (or something close, as the real deal is not available in JavaScript) to produce a better board every time.
 
 It is guaranteed that the CPU will always choose the best possible move, causing it to always win the game.
 
 If the player also plays in the best possible way, the game will always result in at most a draw.
+
+### Implementation details
+
+The algorithm follows these simple rules for each CPU turn:
+
+- If there is any pair of CPU's symbols that can turn into a three-of-a-kind in a single move, pick that move and win
+- Otherwise, if there is any pair of player's symbols that can turn into a three-of-a-kind in the next move, block it
+- Otherwise, if no corner is used, pick any one
+- Otherwise, if there is a corner already picked by the CPU and the opposite is open, pick it
+- Otherwise, if there a corner already picked by the player and the opposite is open, pick it
+- Otherwise, if there is a corner already picked by the CPU and one adjacent is open, pick it
+- Otherwise, if there are any spots left, the board will inevitably lead to a draw, so pick any spot
 
 ## FAQ
 

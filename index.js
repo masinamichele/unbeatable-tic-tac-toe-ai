@@ -35,7 +35,7 @@ const [   /* ___L, ___M, ___R */
 
 const Rows = { Top: [TopL, TopM, TopR], Mid: [MidL, MidM, MidR], Bot: [BotL, BotM, BotR] };
 const Cols = { L: [TopL, MidL, BotL], M: [TopM, MidM, BotM], R: [TopR, MidR, BotR] };
-const Diag = { Primary: [TopL, MidM, BotR], Secondary: [TopR, MidM, BotL] };
+const Diag = { Pri: [TopL, MidM, BotR], Sec: [TopR, MidM, BotL] };
 
 const board = [_, _, _, _, _, _, _, _, _];
 
@@ -63,9 +63,6 @@ const match = (positions, match) => {
 const all = (v) => Array(9).fill(v);
 
 const computeNextMove = () => {
-  // If the board is empty, start at any corner
-  if (isBoardEmpty()) return random([TopL, TopR, BotL, BotR]);
-
   // If the CPU can win in this turn, win
 
   // Horizontal pair
@@ -89,12 +86,12 @@ const computeNextMove = () => {
   if (match(Cols.M, [C, C, _])) return BotM;
   if (match(Cols.R, [C, C, _])) return BotR;
   // Diagonal pair
-  if (match(Diag.Primary, [_, C, C])) return TopL;
-  if (match(Diag.Primary, [C, _, C])) return MidM;
-  if (match(Diag.Primary, [C, C, _])) return BotR;
-  if (match(Diag.Secondary, [_, C, C])) return TopR;
-  if (match(Diag.Secondary, [C, _, C])) return MidM;
-  if (match(Diag.Secondary, [C, C, _])) return BotL;
+  if (match(Diag.Pri, [_, C, C])) return TopL;
+  if (match(Diag.Pri, [C, _, C])) return MidM;
+  if (match(Diag.Pri, [C, C, _])) return BotR;
+  if (match(Diag.Sec, [_, C, C])) return TopR;
+  if (match(Diag.Sec, [C, _, C])) return MidM;
+  if (match(Diag.Sec, [C, C, _])) return BotL;
 
   // If the player could win in the next turn, prevent it
 
@@ -119,12 +116,12 @@ const computeNextMove = () => {
   if (match(Cols.M, [P, P, _])) return BotM;
   if (match(Cols.R, [P, P, _])) return BotR;
   // Diagonal pair
-  if (match(Diag.Primary, [_, P, P])) return TopL;
-  if (match(Diag.Primary, [P, _, P])) return MidM;
-  if (match(Diag.Primary, [P, P, _])) return BotR;
-  if (match(Diag.Secondary, [_, P, P])) return TopR;
-  if (match(Diag.Secondary, [P, _, P])) return MidM;
-  if (match(Diag.Secondary, [P, P, _])) return BotL;
+  if (match(Diag.Pri, [_, P, P])) return TopL;
+  if (match(Diag.Pri, [P, _, P])) return MidM;
+  if (match(Diag.Pri, [P, P, _])) return BotR;
+  if (match(Diag.Sec, [_, P, P])) return TopR;
+  if (match(Diag.Sec, [P, _, P])) return MidM;
+  if (match(Diag.Sec, [P, P, _])) return BotL;
 
   // Given that the CPU cannot win in this turn
   // and the player cannot win in the next,
@@ -147,9 +144,13 @@ const computeNextMove = () => {
 
   // Occupy the corner adjacent to one already owned by the CPU
   if (match([TopL, TopR], [_, C])) return TopL;
-  if (match([BotL, BotR], [_, C])) return BotL;
   if (match([TopL, TopR], [C, _])) return TopR;
+  if (match([BotL, BotR], [_, C])) return BotL;
   if (match([BotL, BotR], [C, _])) return BotR;
+  if (match([TopL, BotL], [_, C])) return TopL;
+  if (match([TopL, BotL], [C, _])) return BotL;
+  if (match([TopR, BotR], [C, _])) return BotR;
+  if (match([TopR, BotR], [_, C])) return TopR;
 
   // If there are any spots left, the board is
   // probably symmetric so we can choose any spot
@@ -185,9 +186,7 @@ const loop = async () => {
   drawBoard();
 
   if (hasError) {
-    console.log(
-      `Submit this to the developer: ${board.join('')}#${+firstPlayer == 'cpu'}_${+numberMode == 'reverse'}\n`,
-    );
+    console.log(`Submit this to the developer: ${board.join('')}#${+firstPlayer == 'cpu'}_${+numberMode == 'reverse'}\n`);
     process.exit(1);
   }
 
@@ -217,9 +216,7 @@ const header = () => {
   console.clear();
   console.log('\x1b[34m<\x1b[36m<\x1b[35m Unbeatable Tic-Tac-Toe AI \x1b[36m>\x1b[34m>\x1b[0m');
   console.log();
-  console.log(
-    `\x1b[${color[charset[P]]}m${charset[P]}\x1b[0m = Player, \x1b[${color[charset[C]]}m${charset[C]}\x1b[0m = CPU`,
-  );
+  console.log(`\x1b[${color[charset[P]]}m${charset[P]}\x1b[0m = Player, \x1b[${color[charset[C]]}m${charset[C]}\x1b[0m = CPU`);
   if (firstPlayer == 'cpu') console.log(`CPU goes first.`);
   else console.log(`Player goes first.`);
   console.log();
@@ -287,12 +284,12 @@ const win = () => {
     match(Cols.L, all(C)) ||
     match(Cols.M, all(C)) ||
     match(Cols.R, all(C)) ||
-    match(Diag.Primary, all(C)) ||
-    match(Diag.Primary, all(C)) ||
-    match(Diag.Primary, all(C)) ||
-    match(Diag.Secondary, all(C)) ||
-    match(Diag.Secondary, all(C)) ||
-    match(Diag.Secondary, all(C))
+    match(Diag.Pri, all(C)) ||
+    match(Diag.Pri, all(C)) ||
+    match(Diag.Pri, all(C)) ||
+    match(Diag.Sec, all(C)) ||
+    match(Diag.Sec, all(C)) ||
+    match(Diag.Sec, all(C))
   );
 };
 
@@ -316,12 +313,12 @@ const lose = () => {
     match(Cols.L, all(P)) ||
     match(Cols.M, all(P)) ||
     match(Cols.R, all(P)) ||
-    match(Diag.Primary, all(P)) ||
-    match(Diag.Primary, all(P)) ||
-    match(Diag.Primary, all(P)) ||
-    match(Diag.Secondary, all(P)) ||
-    match(Diag.Secondary, all(P)) ||
-    match(Diag.Secondary, all(P))
+    match(Diag.Pri, all(P)) ||
+    match(Diag.Pri, all(P)) ||
+    match(Diag.Pri, all(P)) ||
+    match(Diag.Sec, all(P)) ||
+    match(Diag.Sec, all(P)) ||
+    match(Diag.Sec, all(P))
   );
 };
 
